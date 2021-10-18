@@ -1,0 +1,7 @@
+@inproceedings{shedligeri2021selfvi,
+  title={SeLFVi: Self-Supervised Light-Field Video Reconstruction From Stereo Video},
+  author={Shedligeri, Prasan and Schiffers, Florian and Ghosh, Sushobhan and Cossairt, Oliver and Mitra, Kaushik},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={2491--2501},
+  year={2021}
+}

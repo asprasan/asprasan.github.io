@@ -1,0 +1,408 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script> 
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+
+<style type="text/css">
+	body {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+		font-weight:300;
+		font-size:18px;
+		margin-left: auto;
+		margin-right: auto;
+		width: 1100px;
+	}
+	
+	h1 {
+		font-size:32px;
+		font-weight:300;
+	}
+	
+	.disclaimerbox {
+		background-color: #eee;		
+		border: 1px solid #eeeeee;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+		padding: 20px;
+	}
+
+	video.header-vid {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	img.header-img {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	img.rounded {
+		border: 1px solid #eeeeee;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	a:link,a:visited
+	{
+		color: #1367a7;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #208799;
+	}
+	
+	td.dl-link {
+		height: 160px;
+		text-align: center;
+		font-size: 22px;
+	}
+	
+	.layered-paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		5px 5px 0 0px #fff, /* The second layer */
+		5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		10px 10px 0 0px #fff, /* The third layer */
+		10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
+		15px 15px 0 0px #fff, /* The fourth layer */
+		15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
+		20px 20px 0 0px #fff, /* The fifth layer */
+		20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
+		25px 25px 0 0px #fff, /* The fifth layer */
+		25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+	.paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		0px 0px 1px 1px rgba(0,0,0,0.35); /* The top layer shadow */
+
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		5px 5px 0 0px #fff, /* The second layer */
+		5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		10px 10px 0 0px #fff, /* The third layer */
+		10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+	
+	.vert-cent {
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	
+	hr
+	{
+		border: 0;
+		height: 1px;
+		background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+	}
+</style>
+
+<html>
+<head>
+	<title>SeLFVi: Self-supervised Light Field Video Reconstruction from Stereo Video</title>
+	<meta property="og:image" content="./resources/teaser.png"/> <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/ if you update and want to force Facebook to rescrape. -->
+	<meta property="og:title" content="SeLFVi: Self-supervised Light Field Video Reconstruction from Stereo Video" />
+	<meta property="og:description" content="Taking a stereo video as input, we reconstruct light-field videos. Regularizing the prediction with a novel low-rank tensor display based representation for light-fields." />
+
+	<!-- Get from Google Analytics -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src=""></script> 
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-75863369-6');
+	</script>
+</head>
+
+<body>
+	<br>
+	<center>
+		<span style="font-size:36px">SeLFVi: Self-supervised Light Field Video Reconstruction from Stereo Video</span>
+		<table align=center width=600px>
+			<table align=center width=600px>
+				<tr>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px"><a href="https://asprasan.github.io">Prasan Shedligeri</a></span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px"><a href="https://florianschiffers.de/">Florian Schiffers</a></span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px"><a href="https://www.linkedin.com/in/sushobhan-ghosh-635b6779/">Sushobhan Ghosh</a></span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px"><a href="https://compphotolab.northwestern.edu/people/oliver-ollie-cossairt/">Oliver Cossairt</a></span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px"><a href="http://www.ee.iitm.ac.in/kmitra/">Kaushik Mitra</a></span>
+						</center>
+					</td>
+				</tr>
+			</table>
+			<table align=center width=250px>
+				<tr>
+					<td align=center width=120px>
+						<center>
+							<span style="font-size:24px"><a href='https://openaccess.thecvf.com/content/ICCV2021/html/Shedligeri_SeLFVi_Self-Supervised_Light-Field_Video_Reconstruction_From_Stereo_Video_ICCV_2021_paper.html'>[Paper]</a></span>
+						</center>
+					</td>
+					<!-- <td align=center width=120px>
+						<center>
+							<span style="font-size:24px"><a href='https://github.com/asprasan/codedblurred'>[GitHub]</a></span><br>
+						</center>
+					</td> -->
+				</tr>
+			</table>
+		</table>
+	</center>
+
+	<center>
+		<!-- <table align=center width=850px> -->
+			<style type="text/css">
+.tg  {border:none;border-collapse:collapse;border-spacing:0;}
+.tg td{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;
+  padding:5px 5px;word-break:normal;}
+.tg th{border-style:solid;border-width:0px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-8jgo{border-color:#ffffff;text-align:center;vertical-align:center}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:center}
+</style>
+<table class="tg">
+<!-- <thead>
+  <tr>
+    <th class="tg-8jgo"></th>
+    <th class="tg-8jgo"></th>
+    <th class="tg-8jgo">Coded</th>
+    <th class="tg-c3ow" colspan="2">Fully exposed - coded (Ours)</th>
+  </tr>
+</thead> -->
+<tbody>
+  <tr>
+  	<td class="tg-8jgo"><img src="./resources/teaser.png" width="400"></td>
+  </tr>
+  
+  
+</tbody>
+</table>
+			<!-- <tr>
+				<td width=260px>
+					<center>
+						<img class="round" style="width:500px" src="./resources/fusion_teaser.png"/>
+					</center>
+				</td>
+			</tr> -->
+		<!-- </table> -->
+		<!-- <table align=center width=850px>
+			<tr>
+				<td>
+					This was a template originally made for <a href="http://richzhang.github.io/colorization/">Colorful Image Colorization</a>. The code can be found in this <a href="https://github.com/richzhang/webpage-template">repository</a>.
+				</td>
+			</tr>
+		</table> -->
+	</center>
+
+	<hr>
+
+	<table align=center width=850px>
+		<center><h1>Abstract</h1></center>
+		<tr>
+			<td align=justify>
+				Light-field imaging is appealing to the mobile devices market because of its capability for intuitive post-capture processing.
+		    Acquiring LF data with high angular, spatial and temporal resolution poses significant challenges, especially with space constraints preventing bulky optics.
+		    At the same time, stereo video capture, now available on many consumer devices, can be interpreted as a sparse LF-capture.
+		    We explore the application of small baseline stereo videos for reconstructing high fidelity LF videos.
+		    
+		    
+		    We propose a self-supervised learning-based algorithm for LF video reconstruction from stereo video.
+		    The self-supervised LF video reconstruction is guided via the geometric information from the individual stereo pairs and the temporal information from the video sequence.
+		    LF estimation is further regularized by a low-rank constraint based on layered LF displays.
+		    The proposed self-supervised algorithm facilitates advantages such as post-training fine-tuning on test sequences and variable angular view interpolation and extrapolation.
+		    Quantitatively the reconstructed LF videos show higher fidelity than previously proposed unsupervised approaches.% for LF reconstruction.
+		    We demonstrate our results via LF videos generated from publicly available stereo videos acquired from commercially available stereoscopic cameras.
+		    Finally, we demonstrate that our reconstructed LF videos allow applications such as post-capture focus control and region-of-interest (RoI) based focus tracking for videos.
+			</td>
+		</tr>
+	</table>
+	<br>
+
+	<hr>
+	<center><h1>Talk</h1></center>
+	<p align="center">
+		<iframe src="https://drive.google.com/file/d/18pC1gVtn3zibIPIYBfUMvQ9PBfX_fLkN/view?usp=sharing" width="660" height="395" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen align="center"></iframe>
+	</p>
+
+	<table align=center width=800px>
+		<br>
+		<tr>
+			<center>
+				<span style="font-size:28px"><a href='https://docs.google.com/presentation/d/19cyPz4MMaaId3E-GWlQBH01o5uQ--3uHc_ZW37z4ocE/edit?usp=sharing'>[Slides]</a>
+				</span>
+			</center>
+		</tr>
+	</table>
+	<hr>
+
+	<center><h1>Key takeaways</h1></center>
+
+	<table align=center width=800px>
+		<center>
+			<tr>
+				<td>
+					<li>
+						  Commercial light-field cameras like Lytro acquire light-field videos at only 3 fps due to the large data bandwidth requirement.
+					</li>
+					<li>
+							Stereo cameras that are now available in major mobile devices acquire stereo videos. These stereo videos can be considered as a sparse sample of light-field views.
+					</li>
+					<li>
+							Reconstruction of light-field videos from stereo videos is ill-posed and requires strong regularization. We utilize low-rank light-field representation based on tensor-display model as our regularizer.
+					</li>
+					<li>
+							Photometric, geometric, and temporal consistency constraints can be extracted from the input stereo video sequence. We define self-supervised loss functions based on these consistency constraints to reconstruct light-field videos from stereo videos alone.
+					</li>
+				</td>
+			</tr>
+		</center>
+	</table>
+
+	<hr>
+
+	<center><h1>Algorithm</h1></center>
+
+	<!-- <table align=center width=640px>
+		<center>
+			<tr>
+				<td>
+
+				</td>
+			</tr>
+		</center>
+	</table> -->
+	<table align=center width=600px>
+		<tr>
+			<td align=center width=600px>
+				<center>
+					<td><img class="round" style="width:850px" src="./resources/method.png"/></td>
+						Overall flow of the proposed self-supervised algorithm for LF video reconstruction from stereo video.
+	    			The LF frames are generated from the input stereo pair via an intermediate low-rank tensor-display (TD) based representation.
+	    			The self-supervised learning of LF reconstruction is guided via self-supervised cost functions involving stereo pair, disparity maps and optical flow maps.
+				</center>
+			</td>
+		</tr>
+	</table>
+	<table align=center width=850px>
+		<center>
+			<tr>
+				<td align=justify>
+					
+				</td>
+			</tr>
+		</center>
+	</table>
+	<!-- <table align=center width=800px>
+		<br>
+		<tr><center>
+			<span style="font-size:28px">&nbsp;<a href='https://github.com/asprasan/codedblurred'>[GitHub]</a>
+			</center>
+		</span>
+	</table> -->
+	<br>
+	<hr>
+	<table align=center width=450px>
+		<center><h1>Paper and Supplementary Material</h1></center>
+		<tr>
+			<td><a href=""><img class="layered-paper-big" style="height:175px" src="./resources/paper.png"/></a></td>
+			<td><span style="font-size:14pt"> Prasan Shedligeri et al.<br>
+				<b> </b><br>
+				<br>
+				(Available as <a href="https://openaccess.thecvf.com/content/ICCV2021/html/Shedligeri_SeLFVi_Self-Supervised_Light-Field_Video_Reconstruction_From_Stereo_Video_ICCV_2021_paper.html">Pre-print</a>)<br>
+				<!-- (<a href="./resources/camera-ready.pdf">camera ready</a>)<br> -->
+				<span style="font-size:4pt"><a href=""><br></a>
+				</span>
+			</td>
+		</tr>
+	</table>
+	<br>
+
+	<table align=center width=300px>
+		<tr>
+			<td align=center><span style="font-size:14pt">
+				<a href="https://drive.google.com/file/d/1DInVOX078jBcM3iw6bZtTmwEuW79sX2y/view?usp=sharing">[Supplementary Material]</a></td>
+			<!-- <td align=center ><span style="font-size:14pt">
+				<a href="./resources/bibtex.txt">[Bibtex]</a></td> -->
+		</tr>
+	</table>
+
+	<hr>
+	<br>
+
+	<center><h1>Related Publications</h1></center>
+
+	<table align=center width=900px>
+		<center>
+			<tr>
+				<td>
+					<li><b>Prasan Shedligeri</b>, Anupama S & Kaushik Mitra. (2021) A Unified Framework for Compressive Video Recovery from Coded ExposureTechniques. Accepted at <em>IEEE/CVF Winter Conference on Applications of Computer Vision,</em> doi to be assigned 
+            	<a href="https://arxiv.org/abs/2011.05532">[Preprint]</a>
+            	<a href="https://docs.google.com/presentation/d/1TqyRWTtNqIssMJ_nnHTTNLNbdP_oMqGtBlgvnaNTcYI/edit?usp=sharing">[Slides]</a>
+            	<a href="https://drive.google.com/file/d/1GGpgzTGXnE1XzONJOv81iK23TVIfkAvB/view?usp=sharing">[Supplementary]</a>
+            	<a href="https://github.com/asprasan/unified_framework">[Code]</a>
+            <a href="https://asprasan.github.io/unified_framework/">[Webpage]</a></li>
+
+	           		<li><b>Prasan Shedligeri</b>, Anupama S & Kaushik Mitra. (2021) CodedRecon: Video reconstruction for coded exposure imaging techniques. Accepted at <em>Elsevier Journal of Software Impacts,</em> https://doi.org/10.1016/j.simpa.2021.100064
+	            	<a href="https://www.sciencedirect.com/science/article/pii/S2665963821000129">[Paper]</a>
+	            	<a href="https://github.com/asprasan/unified_framework">[Code]</a></li>
+				</td>
+			</tr>
+		</center>
+	</table>
+
+	<hr>
+
+	<table align=center width=900px>
+		<tr>
+			<td width=400px>
+				<left>
+					<center><h1>Acknowledgements</h1></center>
+					The authors would like to thank Matta Gopi Raju for collecting some of the data used in this and related publications.
+					<br>
+					This template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a> and <a href="http://richzhang.github.io/">Richard Zhang</a> for a <a href="http://richzhang.github.io/colorization/">colorful</a> ECCV project; the code can be found <a href="https://github.com/richzhang/webpage-template">here</a>.
+				</left>
+			</td>
+		</tr>
+	</table>
+
+<br>
+</body>
+</html>
+
